@@ -9,6 +9,7 @@ input LoginInput {
 }
 
 type Mutation {
+  createVoc(input: VokabelInput!): Vokabel!
   login(input: LoginInput!): UserResponse!
   register(input: RegisterInput!): UserResponse!
 }
@@ -18,6 +19,9 @@ scalar ObjectId
 
 type Query {
   getLoggedUser: User
+  readUserVoks(userId: ObjectId!): [Vokabel!]!
+  readVoc(vokId: ObjectId!): Vokabel!
+  readVocs: [Vokabel!]!
   user(userId: ObjectId!): User
 }
 
@@ -37,4 +41,18 @@ type User {
 type UserResponse {
   token: String
   user: User
+}
+
+"""Vokabel"""
+type Vokabel {
+  _id: ObjectId!
+  creator: User!
+  deutsch: String!
+  koreanisch: String!
+}
+
+input VokabelInput {
+  _id: ObjectId
+  deutsch: String!
+  koreanisch: String!
 }

@@ -7,6 +7,7 @@ import path from "path";
 //import Resolvers
 import { AuthResolver } from "../resolvers/AuthResolver";
 import { UserResolver } from "../resolvers/UserResolver";
+import { VokabelResolver } from "../resolvers/VokabelResolver";
 
 //middleware and Scalars
 import { TypegooseMiddleware } from "../middleware/typegoose";
@@ -16,7 +17,7 @@ import { ObjectIdScalar } from "./object-id.scalar";
 export default async function createSchema(): Promise<GraphQLSchema> {
   const schema = await buildSchema({
     //add ts resolvers
-    resolvers: [AuthResolver, UserResolver],
+    resolvers: [AuthResolver, UserResolver, VokabelResolver],
     emitSchemaFile: path.resolve(__dirname, "schema.gql"),
     //use document converting middleware
     globalMiddlewares: [TypegooseMiddleware],
