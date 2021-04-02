@@ -1,0 +1,11 @@
+# Write your query or mutation here
+mutation SIGNUP($email: String!, $password: String!, $username: String!) {
+  register(input: { username: $username, email: $email, password: $password }) {
+    user {
+      _id
+      username
+      email
+    }
+    token
+  }
+}

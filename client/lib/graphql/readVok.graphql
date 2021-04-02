@@ -1,0 +1,12 @@
+query READ_VOK($vokId: ObjectId!) {
+  readVoc(vokId: $vokId) {
+    _id
+    deutsch
+    koreanisch
+    creator {
+      _id
+      email
+      username
+    }
+  }
+}

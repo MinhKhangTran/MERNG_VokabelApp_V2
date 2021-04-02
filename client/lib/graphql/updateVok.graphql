@@ -1,0 +1,12 @@
+mutation UPDATE_VOK($input: VokabelInput!) {
+  udpateVok(input: $input) {
+    _id
+    deutsch
+    koreanisch
+    creator {
+      _id
+      username
+      email
+    }
+  }
+}

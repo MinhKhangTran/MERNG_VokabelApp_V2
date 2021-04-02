@@ -1,0 +1,12 @@
+mutation CREATE_VOK($deutsch: String!, $koreanisch: String!) {
+  createVoc(input: { deutsch: $deutsch, koreanisch: $koreanisch }) {
+    _id
+    koreanisch
+    deutsch
+    creator {
+      _id
+      username
+      email
+    }
+  }
+}

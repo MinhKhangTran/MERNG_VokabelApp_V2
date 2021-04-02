@@ -1,0 +1,7 @@
+query LOGGED_IN_USER {
+  getLoggedUser {
+    _id
+    email
+    username
+  }
+}

@@ -1,0 +1,3 @@
+mutation DELETE_VOK($vokId: ObjectId!) {
+  deleteVok(vokId: $vokId)
+}

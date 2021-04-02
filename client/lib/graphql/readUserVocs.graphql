@@ -1,0 +1,12 @@
+query READ_USER_VOCS($userId: ObjectId!) {
+  readUserVoks(userId: $userId) {
+    _id
+    deutsch
+    koreanisch
+    creator {
+      _id
+      username
+      email
+    }
+  }
+}

@@ -1,0 +1,12 @@
+query READ_VOKS {
+  readVocs {
+    _id
+    deutsch
+    koreanisch
+    creator {
+      _id
+      username
+      email
+    }
+  }
+}
