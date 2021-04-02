@@ -56,8 +56,49 @@ export class VokabelResolver {
   }
 
   //delete Voc by ID PRIVATE
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async deleteVok(
+    @Arg("vokId", () => ObjectIdScalar) vokId: ObjectId,
+    @Ctx() ctx: MyContext
+  ): Promise<Boolean> {
+    const vokabel = await VokabelModel.findById(vokId);
+    if (!vokabel) {
+      throw new Error("Es gibt keine Vokabel mit dieser ID");
+    }
+
+    if (vokabel.creator.toString() !== ctx.res.locals.userId) {
+      throw new Error("Du hast keine Rechte dazu");
+    }
+    await VokabelModel.findByIdAndDelete(vokId);
+    return true;
+  }
 
   //update Voc by ID PRIVATE
+  @Mutation(() => Vokabel)
+  @UseMiddleware(isAuth)
+  async udpateVok(
+    @Arg("input") vokInput: VokabelInput,
+    @Ctx() ctx: MyContext
+  ): Promise<Vokabel> {
+    const { _id, deutsch, koreanisch } = vokInput;
+    const vokabel = await VokabelModel.findById(_id);
+    if (!vokabel) {
+      throw new Error("Es gibt keine Vokabel mit dieser ID");
+    }
+    if (vokabel.creator.toString() !== ctx.res.locals.userId) {
+      throw new Error("Du hast keine Rechte dazu");
+    }
+    const updatedVok = await VokabelModel.findOneAndUpdate(
+      { _id },
+      { $set: { deutsch, koreanisch } },
+      { new: true, runValidators: true }
+    );
+    if (!updatedVok) {
+      throw new Error("Es gab ein Fehler beim Ändern");
+    }
+    return updatedVok;
+  }
 
   //define the reference type with FieldResolver and Root
   @FieldResolver()

@@ -10,8 +10,10 @@ input LoginInput {
 
 type Mutation {
   createVoc(input: VokabelInput!): Vokabel!
+  deleteVok(vokId: ObjectId!): Boolean!
   login(input: LoginInput!): UserResponse!
   register(input: RegisterInput!): UserResponse!
+  udpateVok(input: VokabelInput!): Vokabel!
 }
 
 """Mongo id scalar type"""
