@@ -22,11 +22,20 @@ import { useDelete_VokMutation } from "../lib/graphql/deleteVok.graphql";
 import { useEffect, useState } from "react";
 import { READ_VOKS_QUERY } from "./add";
 
+//function to make first letter capital
+const make1stBig = (vokabel: string) => {
+  const firstLetter = vokabel.slice(0, 1);
+  const restLetter = vokabel.slice(1);
+  //   console.log(firstLetter, restLetter);
+  return firstLetter.toUpperCase().concat(restLetter);
+};
+
 const VokDetail = ({ id }) => {
   const { user } = useAuth();
   const { data, loading, error } = useRead_VokQuery({
     variables: { vokId: id },
   });
+  console.log(make1stBig("pferd"));
   //update
   const [updateVokMutation] = useUpdate_VokMutation();
   //delete
@@ -57,10 +66,11 @@ const VokDetail = ({ id }) => {
       resetForm();
     },
   });
+
   useEffect(() => {
     if (data) {
       setFormData({
-        deutsch: data.readVoc.deutsch,
+        deutsch: make1stBig(data.readVoc.deutsch),
         koreanisch: data.readVoc.koreanisch,
       });
     }

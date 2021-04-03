@@ -94,7 +94,9 @@ const HomePage = () => {
               return (
                 <>
                   <Tr key={vok._id}>
-                    <Td color="orange.300">{vok.deutsch}</Td>
+                    <Td color="orange.300">
+                      <Text casing="capitalize">{vok.deutsch}</Text>
+                    </Td>
                     <Td color="orange.300">{vok.koreanisch}</Td>
                     <Td color="orange.300">
                       <Text casing="capitalize">{vok.creator.username}</Text>
