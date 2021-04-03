@@ -68,9 +68,12 @@ const HomePage = () => {
     );
   return (
     <Box mt={8}>
-      <Button colorScheme="orange">
-        <Link href="/add">Neue Vokabel hinzufügen</Link>
-      </Button>
+      {user && (
+        <Button colorScheme="orange">
+          <Link href="/add">Neue Vokabel hinzufügen</Link>
+        </Button>
+      )}
+
       {/* Table */}
       <Table mt={4} variant="simple">
         <Thead>
@@ -78,36 +81,33 @@ const HomePage = () => {
             <Th color="orange.500">Deutsch 🇩🇪</Th>
             <Th color="orange.500">Koreanisch 🇰🇷</Th>
             <Th color="orange.500">Benutzer 🧍🏻</Th>
-            {/* <Th></Th> */}
+            {user && <Th></Th>}
           </Tr>
         </Thead>
-        <Tbody>
-          {data.readVocs.map((vok) => {
-            return (
-              <>
-                <Tr key={vok._id}>
-                  <Td color="orange.300">{vok.deutsch}</Td>
-                  <Td color="orange.300">{vok.koreanisch}</Td>
-                  <Td color="orange.300">
-                    <Text casing="capitalize">{vok.creator.username}</Text>
-                  </Td>
-                  {/* <Td>
-                  <ButtonGroup>
-                    <Button colorScheme="green">✍️</Button>
-                    <Button colorScheme="red">🙅‍♂️</Button>
-                  </ButtonGroup>
-                </Td> */}
+        {data.readVocs.length === 0 ? (
+          <Text>
+            Es gibt noch keine Vokabeln. Melde dich an und erstelle welche 🥲
+          </Text>
+        ) : (
+          <Tbody>
+            {data.readVocs.map((vok) => {
+              return (
+                <>
+                  <Tr key={vok._id}>
+                    <Td color="orange.300">{vok.deutsch}</Td>
+                    <Td color="orange.300">{vok.koreanisch}</Td>
+                    <Td color="orange.300">
+                      <Text casing="capitalize">{vok.creator.username}</Text>
+                    </Td>
+                    {user && (
+                      <Td>
+                        <Button colorScheme="orange">
+                          <Link href={`/${vok._id}`}>🕵🏻</Link>
+                        </Button>
+                      </Td>
+                    )}
 
-                  {/* <IconButton
-                  right="1%"
-                  mt={2}
-                  position="absolute"
-                  variant="ghost"
-                  colorScheme="orange"
-                  aria-label="setting"
-                  icon={<BsThreeDotsVertical />}
-                /> */}
-                  {user?._id === vok.creator._id && (
+                    {/* {user?._id === vok.creator._id && (
                     <Menu>
                       <MenuButton
                         mt={2}
@@ -134,12 +134,13 @@ const HomePage = () => {
                         </MenuItem>
                       </MenuList>
                     </Menu>
-                  )}
-                </Tr>
-              </>
-            );
-          })}
-        </Tbody>
+                  )} */}
+                  </Tr>
+                </>
+              );
+            })}
+          </Tbody>
+        )}
       </Table>
     </Box>
   );

@@ -16,6 +16,8 @@ import * as Yup from "yup";
 import { useCreate_VokMutation } from "lib/graphql/createVok.graphql";
 import { useRead_VoksQuery } from "lib/graphql/readVoks.graphql";
 import gql from "graphql-tag";
+import { useAuth } from "authContext";
+import { useEffect } from "react";
 
 export const READ_VOKS_QUERY = gql`
   query READ_VOKS_QUERY {
@@ -33,6 +35,7 @@ export const READ_VOKS_QUERY = gql`
 `;
 
 const AddPage = () => {
+  const { user } = useAuth();
   const router = useRouter();
   const [createVokMutation, { loading }] = useCreate_VokMutation();
   //for refetching
@@ -53,6 +56,11 @@ const AddPage = () => {
       resetForm();
     },
   });
+  useEffect(() => {
+    if (!user) {
+      router.push("/");
+    }
+  }, [user]);
   return (
     <Box mt={8}>
       <Button colorScheme="orange">
