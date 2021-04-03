@@ -7,7 +7,7 @@ import { useApolloClient } from "@apollo/client";
 import { useRouter } from "next/router";
 
 interface IUser {
-  __typename: "User";
+  // __typename: "User";
   _id: string;
   email: string;
   username: string;
@@ -16,7 +16,9 @@ interface IContextProps {
   //query state
   user: IUser;
   loginLoading: boolean;
+  loginError: any;
   registerLoading: boolean;
+  registerError: any;
   //mutation methods
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (username: string, email: string, password: string) => Promise<void>;
@@ -38,8 +40,14 @@ export const AuthProvider = ({ children }) => {
   //Mutation: signin, signup, sign out (just remove token from storage) => signin, signup
   // query and state into the value object of the provider
 
-  const [signinMutation, { loading: loginLoading }] = useSigninMutation();
-  const [signupMutation, { loading: registerLoading }] = useSignupMutation();
+  const [
+    signinMutation,
+    { loading: loginLoading, error: loginError },
+  ] = useSigninMutation();
+  const [
+    signupMutation,
+    { loading: registerLoading, error: registerError },
+  ] = useSignupMutation();
 
   const signIn = async (email, password) => {
     try {
@@ -84,7 +92,16 @@ export const AuthProvider = ({ children }) => {
   };
   return (
     <AuthContext.Provider
-      value={{ user, signIn, signUp, signOut, loginLoading, registerLoading }}
+      value={{
+        user,
+        signIn,
+        signUp,
+        signOut,
+        loginLoading,
+        loginError,
+        registerLoading,
+        registerError,
+      }}
     >
       {children}
     </AuthContext.Provider>

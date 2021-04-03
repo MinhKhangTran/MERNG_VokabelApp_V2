@@ -11,6 +11,10 @@ import {
   InputRightElement,
   IconButton,
   Button,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -22,7 +26,7 @@ import { useAuth } from "authContext";
 // Redux
 
 const Login = () => {
-  const { loginLoading, user, signIn } = useAuth();
+  const { loginLoading, loginError, signIn, user } = useAuth();
   const router = useRouter();
   const [showPW, setShowPW] = useState(false);
   const formik = useFormik({
@@ -34,12 +38,7 @@ const Login = () => {
         .min(6, "mindestens 6 Zeichen!"),
     }),
     onSubmit: (daten, { resetForm }) => {
-      // dispatch(login(daten));
-      // console.log(daten);
-      // console.log(user);
       signIn(daten.email, daten.password);
-      router.push("/");
-      // resetForm();
     },
   });
   // useEffect(() => {
@@ -61,6 +60,13 @@ const Login = () => {
       <Heading bgGradient="linear(to-l,yellow.200,orange.300)" bgClip="text">
         Login
       </Heading>
+      {loginError && (
+        <Alert status="error">
+          <AlertIcon />
+          <AlertTitle mr={2}>{loginError.message}</AlertTitle>
+        </Alert>
+      )}
+
       <form onSubmit={formik.handleSubmit}>
         {/* Email */}
         <FormControl

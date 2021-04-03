@@ -18,22 +18,39 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuIcon,
-  MenuCommand,
-  MenuDivider,
   IconButton,
   Button,
 } from "@chakra-ui/react";
 import { useRead_VoksQuery } from "lib/graphql/readVoks.graphql";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import Link from "next/link";
+import { useAuth } from "authContext";
+import { useDelete_VokMutation } from "lib/graphql/deleteVok.graphql";
+import gql from "graphql-tag";
+import { useMutation } from "@apollo/client";
+import { READ_VOKS_QUERY } from "./add";
+
+//for updating need gql
+const DELETE_VOK_MUTATION = gql`
+  mutation DELETE_VOK_MUTATION($vokId: ObjectId!) {
+    deleteVok(vokId: $vokId)
+  }
+`;
+
+function update(cache, payload) {
+  console.log(cache.evict);
+  console.log(payload.data.deleteVok);
+  cache.evict(cache.identify(payload.data.deleteVok));
+}
 
 const HomePage = () => {
   const { data, loading, error } = useRead_VoksQuery();
-  // console.log(data);
+  const { user } = useAuth();
+  //delete
+  const [deleteVok] = useMutation(DELETE_VOK_MUTATION);
+
+  //for deleting
+
   if (loading)
     return (
       <Box mt={8}>
@@ -90,21 +107,34 @@ const HomePage = () => {
                   aria-label="setting"
                   icon={<BsThreeDotsVertical />}
                 /> */}
-
-                  <Menu>
-                    <MenuButton
-                      mt={2}
-                      as={IconButton}
-                      aria-label="Settings"
-                      icon={<BsThreeDotsVertical />}
-                      variant="ghost"
-                      colorScheme="orange"
-                    />
-                    <MenuList bg="orange.100" borderColor="orange.400">
-                      <MenuItem color="green.400">✍️ Ändern</MenuItem>
-                      <MenuItem color="red.400">🙅‍♂️ Löschen</MenuItem>
-                    </MenuList>
-                  </Menu>
+                  {user?._id === vok.creator._id && (
+                    <Menu>
+                      <MenuButton
+                        mt={2}
+                        as={IconButton}
+                        aria-label="Settings"
+                        icon={<BsThreeDotsVertical />}
+                        variant="ghost"
+                        colorScheme="orange"
+                      />
+                      <MenuList bg="orange.100" borderColor="orange.400">
+                        <MenuItem color="green.400">✍️ Ändern</MenuItem>
+                        <MenuItem
+                          color="red.400"
+                          onClick={() => {
+                            if (confirm("Bist du dir sicher?")) {
+                              deleteVok({
+                                variables: { vokId: vok._id },
+                                update,
+                              });
+                            }
+                          }}
+                        >
+                          🙅‍♂️ Löschen
+                        </MenuItem>
+                      </MenuList>
+                    </Menu>
+                  )}
                 </Tr>
               </>
             );

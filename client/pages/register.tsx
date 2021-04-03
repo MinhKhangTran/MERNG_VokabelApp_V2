@@ -21,7 +21,7 @@ import * as Yup from "yup";
 import { useAuth } from "authContext";
 
 const Register = () => {
-  const { registerLoading, user, signUp } = useAuth();
+  const { registerLoading, signUp } = useAuth();
   const router = useRouter();
   const [showPW, setShowPW] = useState(false);
   const formik = useFormik({
@@ -34,11 +34,7 @@ const Register = () => {
         .min(6, "mindestens 6 Zeichen!"),
     }),
     onSubmit: (daten, { resetForm }) => {
-      //   console.log(daten);
       signUp(daten.email, daten.username, daten.password);
-      router.push("/");
-
-      resetForm();
     },
   });
 
