@@ -6,6 +6,7 @@ import { theme } from "../styles/theme";
 //Apollo
 import { ApolloProvider } from "@apollo/client";
 import { useApollo } from "../lib/apollo";
+import { AuthProvider } from "authContext";
 
 const MyApp = ({ Component, pageProps }) => {
   const apolloClient = useApollo(pageProps.initialApolloState);
@@ -13,9 +14,11 @@ const MyApp = ({ Component, pageProps }) => {
     <ApolloProvider client={apolloClient}>
       <ChakraProvider resetCSS theme={theme}>
         <ColorModeProvider options={{ useSystemColorMode: true }}>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          <AuthProvider>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </AuthProvider>
         </ColorModeProvider>
       </ChakraProvider>
     </ApolloProvider>
