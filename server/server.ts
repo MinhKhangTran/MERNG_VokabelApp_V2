@@ -9,9 +9,14 @@ import "dotenv/config";
 //schema
 import createSchema from "./schema";
 
+//next deploy
+import nextApp from "@vok-app/client";
+
 //connectDB
 import { connectDB } from "./config/db";
 connectDB();
+
+const handle = nextApp.getRequestHandler();
 
 //Schema
 async function createServer() {
@@ -25,7 +30,7 @@ async function createServer() {
     //middleware CORS and JSON
     const corsOptions = {
       credentials: true,
-      origin: "http://localhost:3000",
+      // origin: "http://localhost:3000",
     };
     app.use(cors(corsOptions));
     app.use(express.json());
@@ -45,6 +50,10 @@ async function createServer() {
     });
 
     apolloServer.applyMiddleware({ app, cors: corsOptions });
+
+    // create next app request handler
+    await nextApp.prepare();
+    app.get("*", (req, res) => handle(req, res));
 
     app.listen(port, () => {
       console.log(

@@ -1,0 +1,27 @@
+{
+  "name": "vok-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "build": "yarn workspace @vok-app/client run build",
+    "start": "yarn workspace @vok-app/server run start",
+    "dev": "yarn workspace @vok-app/server run dev"
+  },
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MinhKhangTran/MERNG_VokabelApp_V2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MinhKhangTran/MERNG_VokabelApp_V2/issues"
+  },
+  "homepage": "https://github.com/MinhKhangTran/MERNG_VokabelApp_V2#readme"
+}
